@@ -32,11 +32,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY", "django-dev-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
-).split(",")
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "story-telllingwords.onrender.com",
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://story-telllingwords.onrender.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
