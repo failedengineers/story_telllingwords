@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Word Nook — draw a word, keep the time</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+
+  <!-- ambient grain / paper texture layer -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch between warm light and warm dark">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <circle cx="12" cy="12" r="4.2"/>
+      <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/>
+    </svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/>
+    </svg>
+  </button>
+
+  <main class="page">
+
+    <header class="masthead">
+      <p class="eyebrow">a small, timed ritual</p>
+      <h1 class="title">The&nbsp;Word&nbsp;Nook</h1>
+      <p class="subtitle">Draw a word from the deck. Sit with it while the timer runs down.</p>
+    </header>
+
+    <!-- ============ CARD DECK ============ -->
+    <section class="deck" aria-label="Word draw">
+      <div class="card-stack">
+        <div class="card-shadow card-shadow--far" aria-hidden="true"></div>
+        <div class="card-shadow card-shadow--near" aria-hidden="true"></div>
+
+        <article class="card" id="card">
+          <span class="card-hole" aria-hidden="true"></span>
+          <p class="card-kicker" id="cardKicker">card 000</p>
+
+          <div class="card-body" id="cardBody">
+            <p class="card-hint" id="cardHint">Tap the stack to draw your first word</p>
+            <h2 class="card-word" id="cardWord" aria-live="polite"></h2>
+            <p class="card-meaning" id="cardMeaning"></p>
+          </div>
+        </article>
+      </div>
+
+      <button class="draw-btn" id="drawBtn">
+        <span class="draw-btn__label">Draw a word</span>
+        <span class="draw-btn__spinner" aria-hidden="true"></span>
+      </button>
+      <p class="draw-error" id="drawError" role="alert"></p>
+    </section>
+
+    <!-- ============ TIMER ============ -->
+    <section class="timer" aria-label="Session timer">
+      <div class="timer-dial">
+        <svg viewBox="0 0 140 140" class="dial-svg">
+          <!-- tick marks, one per minute up to 5 -->
+          <g class="ticks" id="ticks"></g>
+          <circle class="dial-track" cx="70" cy="70" r="54" />
+          <circle class="dial-progress" id="dialProgress" cx="70" cy="70" r="54" />
+        </svg>
+        <div class="dial-center">
+          <span class="dial-time" id="dialTime">03:00</span>
+          <span class="dial-caption" id="dialCaption">minutes</span>
+        </div>
+      </div>
+
+      <div class="timer-controls">
+        <div class="stepper">
+          <button class="stepper-btn" id="minusBtn" aria-label="Decrease minutes">–</button>
+          <span class="stepper-value" id="stepperValue">3 min</span>
+          <button class="stepper-btn" id="plusBtn" aria-label="Increase minutes">+</button>
+        </div>
+
+        <div class="run-controls">
+          <button class="run-btn run-btn--primary" id="startBtn">
+            <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+            <span id="startBtnLabel">Start</span>
+          </button>
+          <button class="run-btn run-btn--ghost" id="resetBtn">Reset</button>
+        </div>
+      </div>
+
+      <p class="timer-status" id="timerStatus"></p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <p>Words fade. Ink stays. — draw slowly, read once, keep the meaning.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

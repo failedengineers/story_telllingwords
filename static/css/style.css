@@ -1,0 +1,348 @@
+/* ==========================================================
+   THE WORD NOOK — design tokens
+   Light  = aged paper + oxblood ink
+   Dark   = espresso + amber glow
+   ========================================================== */
+
+:root{
+  --paper:        #EFE6D2;
+  --paper-deep:   #E1D3B2;
+  --paper-card:   #F7F1E2;
+  --ink:          #2E2117;
+  --ink-soft:     #6B5A47;
+  --accent:       #A23E34;   /* oxblood */
+  --accent-soft:  #C97362;
+  --gold:         #C08A2E;   /* brass */
+  --gold-soft:    #E0BE7C;
+  --line:         #C9B892;
+
+  --shadow-card: 0 18px 34px -18px rgba(46,33,23,0.45);
+  --font-display: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --dur-fast: .22s;
+  --dur-med: .5s;
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+html[data-theme="dark"]{
+  --paper:        #1E1610;
+  --paper-deep:   #150F0B;
+  --paper-card:   #2A2018;
+  --ink:          #F0E4CC;
+  --ink-soft:     #C7B79A;
+  --accent:       #D06A56;
+  --accent-soft:  #E08A78;
+  --gold:         #E8B04B;
+  --gold-soft:    #F3CD84;
+  --line:         #4A3B2A;
+
+  --shadow-card: 0 18px 40px -16px rgba(0,0,0,0.6);
+}
+
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+  overflow-x:hidden;
+  transition: background var(--dur-med) var(--ease), color var(--dur-med) var(--ease);
+}
+
+/* subtle paper grain */
+.grain{
+  position:fixed; inset:0; pointer-events:none; z-index:0;
+  opacity:.35; mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(rgba(46,33,23,.10) 0.6px, transparent 0.6px),
+    radial-gradient(rgba(46,33,23,.06) 0.6px, transparent 0.6px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1px 2px;
+}
+html[data-theme="dark"] .grain{ opacity:.5; mix-blend-mode:overlay; }
+
+/* ============ theme toggle ============ */
+.theme-toggle{
+  position:fixed; top:22px; right:22px; z-index:10;
+  width:42px; height:42px; border-radius:50%;
+  border:1px solid var(--line);
+  background: var(--paper-card);
+  color: var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  box-shadow: 0 4px 10px -4px rgba(0,0,0,.25);
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-med);
+}
+.theme-toggle:hover{ transform: translateY(-2px) rotate(-8deg); }
+.theme-toggle svg{ width:19px; height:19px; position:absolute; transition: opacity .3s, transform .4s; }
+.icon-moon{ opacity:0; transform: scale(.5) rotate(30deg); }
+html[data-theme="dark"] .icon-sun{ opacity:0; transform: scale(.5) rotate(-30deg); }
+html[data-theme="dark"] .icon-moon{ opacity:1; transform: scale(1) rotate(0); }
+.icon-sun{ opacity:1; }
+
+/* ============ layout ============ */
+.page{
+  position:relative; z-index:1;
+  width:100%; max-width:560px;
+  padding: 64px 24px 40px;
+  display:flex; flex-direction:column;
+  align-items:center;
+  gap:56px;
+}
+
+.masthead{ text-align:center; max-width:420px; }
+.eyebrow{
+  font-family: var(--font-mono);
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color: var(--accent);
+  margin:0 0 10px;
+}
+.title{
+  font-family: var(--font-display);
+  font-optical-sizing:auto;
+  font-weight:600;
+  font-size: clamp(2.1rem, 6vw, 2.9rem);
+  margin:0 0 12px;
+  color: var(--ink);
+  letter-spacing:-.01em;
+}
+.subtitle{
+  margin:0; color: var(--ink-soft);
+  font-size:.98rem; line-height:1.55;
+}
+
+/* ============ deck / card ============ */
+.deck{ display:flex; flex-direction:column; align-items:center; gap:22px; width:100%; }
+
+.card-stack{ position:relative; width:100%; max-width:380px; }
+
+.card-shadow{
+  position:absolute; inset:0;
+  background: var(--paper-deep);
+  border-radius:10px;
+  border:1px solid var(--line);
+}
+.card-shadow--far{ transform: rotate(-5deg) translateY(10px); z-index:1; }
+.card-shadow--near{ transform: rotate(3.5deg) translateY(6px); z-index:2; }
+
+.card{
+  position:relative; z-index:3;
+  background: var(--paper-card);
+  border:1px solid var(--line);
+  border-radius:10px;
+  min-height: 260px;
+  padding: 34px 28px 30px;
+  box-shadow: var(--shadow-card);
+  display:flex; flex-direction:column;
+  transform-origin:center bottom;
+}
+
+.card-hole{
+  position:absolute; top:16px; left:50%; transform:translateX(-50%);
+  width:14px; height:14px; border-radius:50%;
+  background: var(--paper);
+  border:2px solid var(--gold);
+  box-shadow: inset 0 0 0 2px var(--paper-card);
+}
+
+.card-kicker{
+  font-family: var(--font-mono);
+  font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+  color: var(--ink-soft);
+  margin: 14px 0 0;
+  text-align:center;
+}
+
+.card-body{
+  flex:1;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center;
+  gap:14px;
+  padding-top: 18px;
+}
+
+.card-hint{
+  color: var(--ink-soft);
+  font-size:.95rem;
+  margin:0;
+}
+
+.card-word{
+  font-family: var(--font-display);
+  font-weight:700;
+  font-size: clamp(1.9rem, 7vw, 2.6rem);
+  margin:0;
+  color: var(--accent);
+  letter-spacing:-.01em;
+}
+.card-word .letter{ display:inline-block; }
+
+.card-meaning{
+  margin:0; max-width:300px;
+  color: var(--ink);
+  font-size:1rem; line-height:1.55;
+}
+
+/* draw button */
+.draw-btn{
+  position:relative;
+  font-family:var(--font-body); font-weight:600; font-size:.95rem;
+  color:#fff8ef;
+  background: var(--accent);
+  border:none; border-radius:999px;
+  padding: 14px 30px;
+  cursor:pointer;
+  display:flex; align-items:center; gap:10px;
+  box-shadow: 0 10px 20px -10px rgba(162,62,52,.6);
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), background var(--dur-med);
+}
+.draw-btn:hover{ transform: translateY(-2px); box-shadow: 0 14px 24px -10px rgba(162,62,52,.65); }
+.draw-btn:active{ transform: translateY(0px) scale(.98); }
+.draw-btn:disabled{ cursor:progress; opacity:.85; }
+
+.draw-btn__spinner{
+  width:14px; height:14px; border-radius:50%;
+  border:2px solid rgba(255,255,255,.4);
+  border-top-color:#fff;
+  display:none;
+}
+.draw-btn.is-loading .draw-btn__spinner{ display:inline-block; animation: spin .7s linear infinite; }
+.draw-btn.is-loading .draw-btn__label{ opacity:.85; }
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+.draw-error{
+  color: var(--accent);
+  font-size:.85rem;
+  min-height: 1.1em;
+  margin:0;
+  opacity:0;
+}
+.draw-error.show{ opacity:1; }
+
+/* ============ timer ============ */
+.timer{ display:flex; flex-direction:column; align-items:center; gap:22px; width:100%; }
+
+.timer-dial{ position:relative; width:190px; height:190px; }
+.dial-svg{ width:100%; height:100%; transform: rotate(-90deg); }
+
+.dial-track{
+  fill:none; stroke: var(--line); stroke-width:6;
+}
+.dial-progress{
+  fill:none; stroke: var(--gold); stroke-width:6; stroke-linecap:round;
+  stroke-dasharray: 339.29;
+  stroke-dashoffset: 0;
+  transition: stroke var(--dur-med);
+}
+.ticks line{ stroke: var(--ink-soft); opacity:.5; }
+
+.dial-center{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px;
+}
+.dial-time{
+  font-family: var(--font-mono);
+  font-size:1.9rem; font-weight:600;
+  color: var(--ink);
+  letter-spacing:.02em;
+}
+.dial-caption{
+  font-family: var(--font-mono);
+  font-size:.65rem; text-transform:uppercase; letter-spacing:.12em;
+  color: var(--ink-soft);
+}
+
+.timer-controls{
+  display:flex; flex-direction:column; align-items:center; gap:18px;
+}
+
+.stepper{
+  display:flex; align-items:center; gap:16px;
+  background: var(--paper-card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px 8px;
+}
+.stepper-btn{
+  width:32px; height:32px; border-radius:50%;
+  border:1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font-size:1.1rem; line-height:1;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition: background var(--dur-fast), transform var(--dur-fast);
+}
+.stepper-btn:hover{ background: var(--gold-soft); transform: scale(1.06); }
+.stepper-btn:disabled{ opacity:.4; cursor:not-allowed; transform:none; }
+.stepper-value{
+  font-family: var(--font-mono); font-size:.85rem;
+  min-width:56px; text-align:center; color: var(--ink-soft);
+}
+
+.run-controls{ display:flex; align-items:center; gap:12px; }
+.run-btn{
+  font-family: var(--font-body); font-weight:600; font-size:.9rem;
+  border-radius:999px; padding:12px 22px;
+  cursor:pointer; border:1px solid transparent;
+  display:flex; align-items:center; gap:8px;
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-med);
+}
+.run-btn--primary{
+  background: var(--ink); color: var(--paper);
+}
+html[data-theme="dark"] .run-btn--primary{ background: var(--gold); color: var(--paper-deep); }
+.run-btn--primary:hover{ transform: translateY(-2px); }
+.run-btn--primary svg{ width:15px; height:15px; }
+.icon-pause{ display:none; }
+.run-btn--primary.is-running .icon-play{ display:none; }
+.run-btn--primary.is-running .icon-pause{ display:block; }
+
+.run-btn--ghost{
+  background:transparent; color: var(--ink-soft);
+  border-color: var(--line);
+}
+.run-btn--ghost:hover{ color: var(--accent); border-color: var(--accent); }
+
+.timer-status{
+  min-height:1.2em; margin:0;
+  font-family: var(--font-mono); font-size:.75rem;
+  letter-spacing:.06em; text-transform:uppercase;
+  color: var(--gold);
+  opacity:0;
+}
+.timer-status.show{ opacity:1; }
+
+/* ============ footer ============ */
+.foot{
+  position:relative; z-index:1;
+  padding: 10px 20px 34px;
+  color: var(--ink-soft);
+  font-size:.8rem;
+  text-align:center;
+}
+
+/* ============ motion & accessibility ============ */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}
+
+:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 420px){
+  .page{ padding: 48px 18px 32px; gap:44px; }
+  .card{ padding: 28px 20px 24px; }
+}
