@@ -222,7 +222,7 @@ def generate_word(request):
             user_prompt = random.choice(USER_PROMPT_VARIANTS)
 
             response = client.chat.completions.create(
-                model="openai/gpt-oss-20b",
+               model="qwen/qwen3.6-27b",
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt},
@@ -230,7 +230,7 @@ def generate_word(request):
                 temperature=1.3,
                 top_p=1.0,
                 max_completion_tokens=100,
-                response_format={"type": "json_object"},
+                
             )
 
             content = response.choices[0].message.content.strip()
