@@ -230,6 +230,7 @@ def generate_word(request):
                 temperature=1.3,
                 top_p=1.0,
                 max_completion_tokens=100,
+                response_format={"type": "json_object"},
             )
 
             content = response.choices[0].message.content.strip()
